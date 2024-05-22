@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_cors import CORS
+from waitress import serve
 import schedule
 import threading
 
@@ -52,4 +53,4 @@ t = threading.Thread(target=schedule_loop)
 t.start()
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    serve(app, host='0.0.0.0', port=5000)

@@ -42,7 +42,7 @@ def insert():
     else:
         counter += 1
 
-schedule.every(5).seconds.do(insert)
+schedule.every(300).seconds.do(insert)
 
 def schedule_loop():
     while True:

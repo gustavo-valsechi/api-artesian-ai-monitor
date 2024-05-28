@@ -13,20 +13,6 @@ from repository_fault_detection import FaultDetection
 from repository_log_motor import LogMotor
 from repository_motor import Motor
 
-app = Flask(__name__)
-
-CORS(
-    app, 
-    origins="*", 
-    supports_credentials=True, 
-    methods=['GET', 'OPTIONS']
-)
-
-router_fault_detection.router(app)
-router_log_motor.router(app)
-router_motor.router(app)
-router_flow.router(app)
-
 counter = 1
 
 def insert():
@@ -53,4 +39,19 @@ t = threading.Thread(target=schedule_loop)
 t.start()
 
 if __name__ == '__main__':
-    serve(app, host='0.0.0.0', port=5000)
+    app = Flask(__name__)
+
+    CORS(
+        app, 
+        origins="*", 
+        supports_credentials=True, 
+        methods=['GET', 'OPTIONS', 'POST', 'DELETE']
+    )
+
+    router_fault_detection.router(app)
+    router_log_motor.router(app)
+    router_motor.router(app)
+    router_flow.router(app)
+
+    app.run(debug=True)
+    # serve(app, host='0.0.0.0', port=5000)

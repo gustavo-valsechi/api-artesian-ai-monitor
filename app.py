@@ -42,7 +42,9 @@ t.start()
 
 if __name__ == '__main__':
     app = Flask(__name__)
+
     app.config['JWT_SECRET_KEY'] = 'artesian-ai-monitor'
+    app.config['JWT_ACCESS_TOKEN_EXPIRES'] = 43200
 
     jwt = JWTManager(app)
 

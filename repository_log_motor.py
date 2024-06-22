@@ -58,3 +58,19 @@ class LogMotor(db.Base):
         response = jsonify({'content': serialized_data})
         response.headers.add('Access-Control-Allow-Origin', '*')
         return response
+    
+    def create(body):
+        session = db.Session()
+        
+        logMotor = LogMotor(
+            status=body.get("status"),
+            frequencia=body.get("frequencia"), 
+            corrente=body.get("corrente"),
+            tensao_entrada=body.get("tensao_entrada"),
+        )
+
+        session.add(logMotor)
+        session.commit()
+        session.close()
+        
+        return jsonify(logMotor), 200

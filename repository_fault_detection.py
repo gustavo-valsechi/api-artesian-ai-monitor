@@ -74,3 +74,17 @@ class FaultDetection(db.Base):
         })
 
         return response
+    
+    def create(body):
+        session = db.Session()
+        
+        faultDetection = FaultDetection(
+            previsao_registrada=body.get("previsao"), 
+            offset_tolerancia=body.get("offset_tolerancia", 0)
+        )
+
+        session.add(faultDetection)
+        session.commit()
+        session.close()
+        
+        return jsonify(faultDetection), 200

@@ -10,5 +10,5 @@ def router(app, jwt):
         return FaultDetection.get(request.args)
     
     @app.route('/fault-detection', methods=['POST'])
-    def create_log_motor():
+    def create_fault_detection():
         return FaultDetection.create(tools.requestFormatter(request)["body"])

@@ -66,7 +66,7 @@ class LogMotor(db.Base):
             status=body.get("status"),
             frequencia=body.get("frequencia"), 
             corrente=body.get("corrente"),
-            tensao_entrada=body.get("tensao_entrada"),
+            tensao_entrada=body.get("tensao"),
         )
 
         session.add(logMotor)

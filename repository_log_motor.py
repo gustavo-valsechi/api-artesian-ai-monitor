@@ -74,4 +74,4 @@ class LogMotor(db.Base):
         session.commit()
         session.close()
         
-        return jsonify(logMotor), 200
+        return jsonify({"mensagem": "Log do motor registrado com sucesso!"}), 200

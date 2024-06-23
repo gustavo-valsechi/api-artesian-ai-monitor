@@ -87,4 +87,4 @@ class FaultDetection(db.Base):
         session.commit()
         session.close()
         
-        return jsonify(faultDetection), 200
+        return jsonify({"mensagem": "Previsão registrada com sucesso!"}), 200

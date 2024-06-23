@@ -37,6 +37,15 @@ class LogMotor(db.Base):
         response.headers.add('Access-Control-Allow-Origin', '*')
         return response
     
+    def getAll():
+        session = db.Session()
+
+        data = session.query(LogMotor).all()
+
+        session.close()
+
+        return data
+    
     def create(body):
         session = db.Session()
 

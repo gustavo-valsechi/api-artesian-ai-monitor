@@ -1,18 +1,8 @@
 import pandas as pd
 from sklearn.ensemble import IsolationForest
 from sklearn.preprocessing import StandardScaler
-from db import engine
+from repository_log_motor import LogMotor
 import joblib
-
-def dataset():
-    """
-    Carrega os dados do banco de dados PostgreSQL usando uma consulta SQL.
-    """
-    query = "SELECT * FROM log_motor lm;"
-
-    with engine.connect() as connection:
-        data = pd.read_sql_query(query, connection)
-    return data
 
 def pre_processing_data(data):
     """
@@ -47,8 +37,10 @@ def main():
     scaler_path = './scaler.pkl'
 
     # Carregar os dados
-    data = dataset()
 
+    print("AQQQQ")
+    data = LogMotor.getAll()
+    print(data)
     # Pré-processar os dados
     features_scaled, scaler = pre_processing_data(data)
 

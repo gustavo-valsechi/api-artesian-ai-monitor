@@ -1,6 +1,8 @@
 from sqlalchemy import Column, Float, Integer, DateTime, func
 from sqlalchemy.sql import and_
 from flask import jsonify
+from repository_motor import Motor
+from repository_log_motor import LogMotor
 import tools
 import db
 import math
@@ -65,7 +67,25 @@ class FaultDetection(db.Base):
         data = data.offset(int(params.get('limit') or 10) * int(params.get('offset') or 0))
         data = data.all()
 
-        serialized_data = [row.builder() for row in data]
+        serialized_data = []            
+
+        for row in data:
+            builded_row = row.builder()
+
+            tag_motor = ''
+
+            log_motor = session.query(LogMotor).filter_by(id_log_motor=row.id_log_motor).first()
+
+            if log_motor:
+                motor = session.query(Motor).filter_by(id_motor=log_motor.id_motor).first()
+
+                if motor:
+                    tag_motor = motor.tag
+
+            builded_row.tag_motor = tag_motor
+
+            serialized_data.append(builded_row)
+
         session.close()
 
         response = jsonify({

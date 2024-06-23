@@ -82,7 +82,7 @@ class FaultDetection(db.Base):
                 if motor:
                     tag_motor = motor.tag
 
-            builded_row.tag_motor = tag_motor
+            builded_row['tag_motor'] = tag_motor
 
             serialized_data.append(builded_row)
 

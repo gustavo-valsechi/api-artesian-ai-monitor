@@ -6,6 +6,7 @@ class Motor(db.Base):
     __tablename__ = 'motor'
 
     id_motor = Column(Integer, primary_key=True, autoincrement=True)
+    referencia = Column(String)
     tag = Column(String)
     descricao = Column(String)
     frequencia = Column(Float)
@@ -17,6 +18,7 @@ class Motor(db.Base):
     def builder(self):
         return {
             'id_motor': self.id_motor,
+            'referencia': self.referencia,
             'tag': self.tag,
             'descricao': self.descricao,
             'frequencia': self.frequencia,

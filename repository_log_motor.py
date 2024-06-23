@@ -61,9 +61,17 @@ class LogMotor(db.Base):
     
     def create(body):
         session = db.Session()
+
+        reference = body.get("referencia")
+
+        motor = session.query(Motor).filter_by(referencia=reference).first()
+
+        if not motor:
+            session.close()
+            return jsonify({"mensagem": "Motor não encontrado"}), 404
         
         logMotor = LogMotor(
-            id_motor=body.get("id_motor"),
+            id_motor=motor.id_motor,
             status=body.get("status"),
             frequencia=body.get("frequencia"), 
             corrente=body.get("corrente"),

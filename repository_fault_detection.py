@@ -9,6 +9,7 @@ class FaultDetection(db.Base):
     __tablename__ = 'previsao'
 
     id_previsao = Column(Integer, primary_key=True, autoincrement=True)
+    id_log_motor = Column(Integer)
     previsao_registrada = Column(Float)
     offset_tolerancia = Column(Float)
     timestamp = Column(DateTime, server_default=func.now())
@@ -79,6 +80,7 @@ class FaultDetection(db.Base):
         session = db.Session()
         
         faultDetection = FaultDetection(
+            id_log_motor=body.get("id_log_motor"),
             previsao_registrada=body.get("previsao"), 
             offset_tolerancia=body.get("offset_tolerancia", 0)
         )

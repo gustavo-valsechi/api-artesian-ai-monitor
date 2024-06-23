@@ -47,7 +47,7 @@ class LogMotor(db.Base):
 
         if not motor:
             Motor.save({
-                "tag": "Motor " + id_motor,
+                "tag": "P0" + id_motor + "BA01",
                 "descricao": "Motor " + id_motor,
                 "frequencia": 60,
                 "corrente": 9.3,

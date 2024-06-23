@@ -18,23 +18,6 @@ class Flow(db.Base):
             'vazao_registrada': self.vazao_registrada,
             'timestamp': self.timestamp.strftime('%Y-%m-%d %H:%M:%S')
         }
-    
-    def insert(id_log_motor, counter, fault_counter):
-        session = db.Session()
-
-        flow = random.uniform(24.36, 25.47)
-
-        if counter == fault_counter:
-            flow = random.uniform(19.36, 22.47)
-
-        register = Flow(
-            id_log_motor=id_log_motor,
-            vazao_registrada=flow,
-        )
-
-        session.add(register)
-        session.commit()
-        session.close()
 
     def get():
         session = db.Session()

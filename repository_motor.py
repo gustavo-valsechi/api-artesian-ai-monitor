@@ -6,7 +6,6 @@ class Motor(db.Base):
     __tablename__ = 'motor'
 
     id_motor = Column(Integer, primary_key=True, autoincrement=True)
-    referencia = Column(String)
     tag = Column(String)
     descricao = Column(String)
     frequencia = Column(Float)
@@ -18,7 +17,6 @@ class Motor(db.Base):
     def builder(self):
         return {
             'id_motor': self.id_motor,
-            'referencia': self.referencia,
             'tag': self.tag,
             'descricao': self.descricao,
             'frequencia': self.frequencia,
@@ -27,53 +25,6 @@ class Motor(db.Base):
             'potencia': self.potencia,
             'timestamp': self.timestamp.strftime('%Y-%m-%d %H:%M:%S')
         }
-    
-    def insert():
-        session = db.Session()
-
-        data = session.query(Motor).order_by(Motor.timestamp.desc()).limit(10).all()
-
-        if (len(data) > 0):
-            return
-
-        register = Motor(
-            id_motor=1,
-            tag='Bomba Poço 1',
-            descricao='Bomba Poço 1',
-            frequencia=60, 
-            corrente=20,
-            tensao=380,
-            potencia=3.3,
-        )
-
-        session.add(register)
-
-        register = Motor(
-            id_motor=2,
-            tag='Bomba Poço 2',
-            descricao='Bomba Poço 2',
-            frequencia=60, 
-            corrente=20,
-            tensao=380,
-            potencia=3.3,
-        )
-
-        session.add(register)
-
-        register = Motor(
-            id_motor=3,
-            tag='Bomba Poço 3',
-            descricao='Bomba Poço 3',
-            frequencia=60, 
-            corrente=20,
-            tensao=380,
-            potencia=3.3,
-        )
-
-        session.add(register)
-
-        session.commit()
-        session.close()
 
     def get():
         session = db.Session()
@@ -99,7 +50,6 @@ class Motor(db.Base):
         else:
             motor = Motor()
 
-        motor.referencia = body.get("referencia", motor.referencia)
         motor.tag = body.get("tag", motor.tag)
         motor.descricao = body.get("descricao", motor.descricao)
         motor.frequencia = body.get("frequencia", motor.frequencia)

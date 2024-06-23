@@ -26,27 +26,6 @@ class LogMotor(db.Base):
             'tensao_entrada': self.tensao_entrada,
             'timestamp': self.timestamp.strftime('%Y-%m-%d %H:%M:%S')
         }
-    
-    def insert(counter, fault_counter):
-        session = db.Session()
-
-        motors = session.query(Motor).order_by(Motor.timestamp.asc()).limit(3).all()
-
-        for motor in motors:
-            register = LogMotor(
-                id_motor=motor.id_motor,
-                status=True,
-                frequencia=random.uniform(58, 62), 
-                corrente=random.uniform(15, 20),
-                tensao_entrada=random.uniform(370, 400),
-            )
-
-            session.add(register)
-            session.commit()
-
-            Flow.insert(register.id_log_motor, counter, fault_counter)
-
-        session.close()
 
     def get():
         session = db.Session()
@@ -62,16 +41,22 @@ class LogMotor(db.Base):
     def create(body):
         session = db.Session()
 
-        reference = body.get("referencia")
+        id_motor = body.get("id_motor")
 
-        motor = session.query(Motor).filter_by(referencia=reference).first()
+        motor = session.query(Motor).filter_by(id_motor=id_motor).first()
 
         if not motor:
-            session.close()
-            return jsonify({"mensagem": "Motor não encontrado"}), 404
+            Motor.save({
+                "tag": "Motor " + id_motor,
+                "descricao": "Motor " + id_motor,
+                "frequencia": 60,
+                "corrente": 9.3,
+                "tensao": 380,
+                "potencia": 3.7,
+            })
         
         logMotor = LogMotor(
-            id_motor=motor.id_motor,
+            id_motor=id_motor,
             status=body.get("status"),
             frequencia=body.get("frequencia"), 
             corrente=body.get("corrente"),

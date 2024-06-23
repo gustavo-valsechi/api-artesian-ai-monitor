@@ -23,23 +23,6 @@ class FaultDetection(db.Base):
             'offset_tolerancia': self.offset_tolerancia,
             'timestamp': self.timestamp.strftime('%Y-%m-%d %H:%M:%S')
         }
-    
-    def insert(counter, fault_counter):
-        session = db.Session()
-
-        fault_detection = 0
-
-        if counter == fault_counter:
-            fault_detection = 1
-
-        register = FaultDetection(
-            previsao_registrada=fault_detection, 
-            offset_tolerancia=24.35
-        )
-
-        session.add(register)
-        session.commit()
-        session.close()
 
     def get(params):
         session = db.Session()

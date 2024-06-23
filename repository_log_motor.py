@@ -56,8 +56,8 @@ class LogMotor(db.Base):
         if not motor:
             Motor.create({
                 "id_motor": id_motor,
-                "tag": "P0" + id_motor + "BA01",
-                "descricao": "Motor " + id_motor,
+                "tag": "P0" + str(id_motor) + "BA01",
+                "descricao": "Motor " + str(id_motor),
                 "frequencia": 60,
                 "corrente": 9.3,
                 "tensao": 380,

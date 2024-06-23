@@ -31,13 +31,12 @@ def train(features_scaled, contamination, n_estimators, max_samples, max_feature
     )
     model.fit(features_scaled)
     return model
-
-def main():
+    
+if __name__ == '__main__':
     model_path = './isolation_forest_model.pkl'
     scaler_path = './scaler.pkl'
 
     # Carregar os dados
-
     print("AQQQQ")
     data = LogMotor.getAll()
     print(data)
@@ -50,6 +49,3 @@ def main():
     # Salvar o modelo treinado e o scaler
     joblib.dump(model, model_path)
     joblib.dump(scaler, scaler_path)
-    
-if __name__ == '__main__':
-    main()

@@ -41,10 +41,10 @@ class LogMotor(db.Base):
         session = db.Session()
 
         data = session.query(LogMotor).all()
-
+        serialized_data = [row.builder() for row in data]
         session.close()
 
-        return data
+        return jsonify(serialized_data)
     
     def create(body):
         session = db.Session()

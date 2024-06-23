@@ -30,7 +30,7 @@ if __name__ == '__main__':
     router_motor.router(app, jwt)
     router_flow.router(app, jwt)
 
-    anomaly_detection()
+    # anomaly_detection()
 
     # app.run(debug=True)
     serve(app, host='0.0.0.0', port=5000)

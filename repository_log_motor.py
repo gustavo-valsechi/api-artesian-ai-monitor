@@ -63,6 +63,7 @@ class LogMotor(db.Base):
         session = db.Session()
         
         logMotor = LogMotor(
+            id_motor=body.get("id_motor"),
             status=body.get("status"),
             frequencia=body.get("frequencia"), 
             corrente=body.get("corrente"),

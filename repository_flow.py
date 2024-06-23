@@ -1,7 +1,6 @@
 from sqlalchemy import Column, Float, Integer, DateTime, func
 from flask import jsonify
 import db
-import random
 
 class Flow(db.Base):
     __tablename__ = 'vazao'

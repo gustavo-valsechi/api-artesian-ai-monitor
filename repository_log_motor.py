@@ -1,9 +1,8 @@
 from sqlalchemy import Column, Float, Integer, DateTime, func, Boolean
 from flask import jsonify
-from repository_flow import Flow
 from repository_motor import Motor
+from IA import anomaly_detection
 import db
-import random
     
 class LogMotor(db.Base):
     __tablename__ = 'log_motor'
@@ -46,7 +45,7 @@ class LogMotor(db.Base):
         motor = session.query(Motor).filter_by(id_motor=id_motor).first()
 
         if not motor:
-            Motor.save({
+            Motor.create({
                 "id_motor": id_motor,
                 "tag": "P0" + id_motor + "BA01",
                 "descricao": "Motor " + id_motor,
@@ -67,5 +66,7 @@ class LogMotor(db.Base):
         session.add(logMotor)
         session.commit()
         session.close()
+
+        anomaly_detection()
         
         return jsonify({"mensagem": "Log do motor registrado com sucesso!"}), 200

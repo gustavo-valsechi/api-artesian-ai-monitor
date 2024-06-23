@@ -61,7 +61,7 @@ def salvar_resultados(data, predicoes, output_path):
     data['anomalia'] = predicoes
     data.to_csv(output_path, index=False, encoding='utf-8', sep=',')
 
-def main():
+def anomaly_detection():
     # Carregar os dados do banco de dados
     data = dataset()
 

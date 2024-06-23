@@ -64,6 +64,33 @@ class Motor(db.Base):
         
         return jsonify({"mensagem": "Motor atualizado com sucesso"}), 200
     
+    def create(body):
+        session = db.Session()
+        id_motor = body.get("id_motor")
+
+        if id_motor:
+            motor = session.query(Motor).filter_by(id_motor=id_motor).first()
+
+            if motor:
+                session.close()
+                return jsonify({"mensagem": "Motor já existe"}), 200
+        else:
+            motor = Motor()
+
+        motor.id_motor = body.get("id_motor", motor.id_motor)
+        motor.tag = body.get("tag", motor.tag)
+        motor.descricao = body.get("descricao", motor.descricao)
+        motor.frequencia = body.get("frequencia", motor.frequencia)
+        motor.corrente = body.get("corrente", motor.corrente)
+        motor.tensao = body.get("tensao", motor.tensao)
+        motor.potencia = body.get("potencia", motor.potencia)
+
+        session.add(motor)
+        session.commit()
+        session.close()
+        
+        return jsonify({"mensagem": "Motor atualizado com sucesso"}), 200
+    
     def delete(id_motor):
         session = db.Session()
 

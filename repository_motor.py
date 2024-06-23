@@ -99,6 +99,7 @@ class Motor(db.Base):
         else:
             motor = Motor()
 
+        motor.referencia = body.get("referencia", motor.referencia)
         motor.tag = body.get("tag", motor.tag)
         motor.descricao = body.get("descricao", motor.descricao)
         motor.frequencia = body.get("frequencia", motor.frequencia)

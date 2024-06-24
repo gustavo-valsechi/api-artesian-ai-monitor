@@ -49,8 +49,16 @@ class LogMotor(db.Base):
     def create(body):
         session = db.Session()
 
+        id_log_motor = body.get("id_log_motor")
         id_motor = body.get("id_motor")
 
+        log_motor = session.query(LogMotor).filter_by(id_log_motor=id_log_motor).first()
+
+        if log_motor:
+            session.rollback()
+            session.close()
+            return jsonify({"mensagem": "Log do motor já está registrado!"}), 200
+        
         motor = session.query(Motor).filter_by(id_motor=id_motor).first()
 
         if not motor:
@@ -65,6 +73,7 @@ class LogMotor(db.Base):
             }, session)
 
         log_motor = LogMotor(
+            id_log_motor=id_log_motor,
             id_motor=id_motor,
             status=body.get("status"),
             frequencia=body.get("frequencia"),

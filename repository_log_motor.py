@@ -78,6 +78,6 @@ class LogMotor(db.Base):
         await session.commit()
         await session.close()
 
-        await asyncio.gather(anomaly_detection())
+        anomaly_detection()
 
         return jsonify({"mensagem": "Log do motor registrado com sucesso!"}), 200

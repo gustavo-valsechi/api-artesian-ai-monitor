@@ -1,5 +1,6 @@
 from sqlalchemy import Column, Float, Integer, DateTime, func, String
 from flask import jsonify
+from repository_log_motor import LogMotor
 import db
     
 class Motor(db.Base):
@@ -30,7 +31,18 @@ class Motor(db.Base):
         session = db.Session()
 
         data = session.query(Motor).order_by(Motor.timestamp.desc()).limit(10).all()
-        serialized_data = [row.builder() for row in data]
+        serialized_data = []            
+
+        for row in data:
+            builded_row = row.builder()
+
+            log_motor = session.query(LogMotor).filter_by(id_motor=row.id_motor).order_by(Motor.timestamp.desc()).first()
+
+            if log_motor:
+                builded_row['status'] = log_motor.status
+
+            serialized_data.append(builded_row)
+
         session.close()
 
         response = jsonify({'content': serialized_data})

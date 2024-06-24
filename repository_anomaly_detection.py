@@ -13,14 +13,12 @@ class AnomalyDetection(db.Base):
     id_previsao = Column(Integer, primary_key=True, autoincrement=True)
     id_log_motor = Column(Integer)
     previsao_registrada = Column(Float)
-    offset_tolerancia = Column(Float)
     timestamp = Column(DateTime, server_default=func.now())
 
     def builder(self):
         return {
             'id_previsao': self.id_previsao,
             'previsao_registrada': self.previsao_registrada,
-            'offset_tolerancia': self.offset_tolerancia,
             'timestamp': self.timestamp.strftime('%Y-%m-%d %H:%M:%S')
         }
 
@@ -84,8 +82,7 @@ class AnomalyDetection(db.Base):
         
         anomalyDetection = AnomalyDetection(
             id_log_motor=body.get("id_log_motor"),
-            previsao_registrada=body.get("previsao"), 
-            offset_tolerancia=body.get("offset_tolerancia", 0)
+            previsao_registrada=body.get("previsao")
         )
 
         session.add(anomalyDetection)

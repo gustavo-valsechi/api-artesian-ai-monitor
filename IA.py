@@ -65,18 +65,19 @@ def anomaly_detection():
     # Carregar os dados do banco de dados
     data = dataset()
 
-    # Carregar o modelo treinado e o scaler
-    model = joblib.load('./isolation_forest_model.pkl')
-    scaler = joblib.load('./scaler.pkl')
+    if len(data):
+        # Carregar o modelo treinado e o scaler
+        model = joblib.load('./isolation_forest_model.pkl')
+        scaler = joblib.load('./scaler.pkl')
 
-    # Definir os nomes das colunas usadas para o treinamento do modelo
-    feature_columns = ['id_motor', 'status', 'frequencia', 'corrente', 'tensao_entrada']
+        # Definir os nomes das colunas usadas para o treinamento do modelo
+        feature_columns = ['id_motor', 'status', 'frequencia', 'corrente', 'tensao_entrada']
 
-    # Pré-processar os dados
-    features_scaled = pre_processing_data(data, scaler, feature_columns)
+        # Pré-processar os dados
+        features_scaled = pre_processing_data(data, scaler, feature_columns)
 
-    # Fazer previsões de anomalias
-    detections = predicts(model, features_scaled)
+        # Fazer previsões de anomalias
+        detections = predicts(model, features_scaled)
 
-    # Inserir os resultados de volta na tabela do banco de dados
-    response(data, detections)
+        # Inserir os resultados de volta na tabela do banco de dados
+        response(data, detections)

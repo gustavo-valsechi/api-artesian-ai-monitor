@@ -1,8 +1,10 @@
 from sqlalchemy import Column, Float, Integer, DateTime, func, Boolean
+from sqlalchemy.exc import IntegrityError
 from flask import jsonify
 from repository_motor import Motor
 from IA import anomaly_detection
 import db
+import asyncio
     
 class LogMotor(db.Base):
     __tablename__ = 'log_motor'
@@ -54,28 +56,37 @@ class LogMotor(db.Base):
         motor = session.query(Motor).filter_by(id_motor=id_motor).first()
 
         if not motor:
-            await Motor.create({
-                "id_motor": id_motor,
-                "tag": "P0" + str(id_motor) + "-BA01",
-                "descricao": "Motor " + str(id_motor),
-                "frequencia": 60,
-                "corrente": 9.3,
-                "tensao": 380,
-                "potencia": 3.7,
-            })
-        
-        logMotor = LogMotor(
+            try:
+                await Motor.create({
+                    "id_motor": id_motor,
+                    "tag": f"P0{id_motor}-BA01",
+                    "descricao": f"Motor {id_motor}",
+                    "frequencia": 60,
+                    "corrente": 9.3,
+                    "tensao": 380,
+                    "potencia": 3.7,
+                })
+            except IntegrityError:
+                pass
+
+        log_motor = LogMotor(
             id_motor=id_motor,
             status=body.get("status"),
-            frequencia=body.get("frequencia"), 
+            frequencia=body.get("frequencia"),
             corrente=body.get("corrente"),
             tensao_entrada=body.get("tensao"),
         )
 
-        await session.add(logMotor)
-        await session.commit()
-        await session.close()
+        try:
+            session.add(log_motor)
+            await session.commit()
+            await session.close()
 
-        anomaly_detection()
-        
-        return jsonify({"mensagem": "Log do motor registrado com sucesso!"}), 200
+            await asyncio.gather(anomaly_detection())
+
+            return jsonify({"mensagem": "Log do motor registrado com sucesso!"}), 200
+
+        except Exception as e:
+            await session.rollback()
+            await session.close()
+            return jsonify({"error": str(e)}), 500

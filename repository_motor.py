@@ -64,7 +64,7 @@ class Motor(db.Base):
         
         return jsonify({"mensagem": "Motor atualizado com sucesso"}), 200
     
-    def create(body):
+    async def create(body):
         session = db.Session()
         id_motor = body.get("id_motor")
 
@@ -86,8 +86,8 @@ class Motor(db.Base):
         )
 
         session.add(motor)
-        session.commit()
-        session.close()
+        await session.commit()
+        await session.close()
         
         return jsonify({"mensagem": "Motor atualizado com sucesso"}), 200
     

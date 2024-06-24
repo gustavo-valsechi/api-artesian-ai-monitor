@@ -64,8 +64,12 @@ class Motor(db.Base):
         
         return jsonify({"mensagem": "Motor atualizado com sucesso"}), 200
     
-    async def create(body):
-        session = db.Session()
+    def create(body, external_session):
+        if not external_session:
+            session = db.Session()
+        else:
+            session = external_session
+
         id_motor = body.get("id_motor")
 
         if id_motor:
@@ -85,17 +89,11 @@ class Motor(db.Base):
             potencia=body.get("potencia"),
         )
 
-        try:
-            session.add(motor)
-            await session.commit()
-            await session.close()
-
-            return jsonify({"mensagem": "Log do motor registrado com sucesso!"}), 200
-
-        except Exception as e:
-            await session.rollback()
-            await session.close()
-            return jsonify({"error": str(e)}), 500
+        session.add(motor)
+        session.commit()
+        session.close()
+        
+        return jsonify({"mensagem": "Motor atualizado com sucesso"}), 200
     
     def delete(id_motor):
         session = db.Session()

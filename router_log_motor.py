@@ -12,8 +12,4 @@ def router(app, jwt):
     
     @app.route('/log-motor', methods=['POST'])
     def create_log_motor():
-        try:
-            resposta, status = asyncio.run(LogMotor.create(tools.requestFormatter(request)["body"]))
-            return jsonify(resposta), status
-        except Exception as e:
-            return jsonify({"error": str(e)}), 500
+        return LogMotor.create(tools.requestFormatter(request)["body"])

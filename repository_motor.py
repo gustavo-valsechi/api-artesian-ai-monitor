@@ -85,11 +85,17 @@ class Motor(db.Base):
             potencia=body.get("potencia"),
         )
 
-        session.add(motor)
-        await session.commit()
-        await session.close()
-        
-        return jsonify({"mensagem": "Motor atualizado com sucesso"}), 200
+        try:
+            session.add(motor)
+            await session.commit()
+            await session.close()
+
+            return jsonify({"mensagem": "Log do motor registrado com sucesso!"}), 200
+
+        except Exception as e:
+            await session.rollback()
+            await session.close()
+            return jsonify({"error": str(e)}), 500
     
     def delete(id_motor):
         session = db.Session()

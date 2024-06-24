@@ -56,15 +56,18 @@ class LogMotor(db.Base):
         motor = session.query(Motor).filter_by(id_motor=id_motor).first()
 
         if not motor:
-            await Motor.create({
-                "id_motor": id_motor,
-                "tag": f"P0{id_motor}-BA01",
-                "descricao": f"Motor {id_motor}",
-                "frequencia": 60,
-                "corrente": 9.3,
-                "tensao": 380,
-                "potencia": 3.7,
-            })
+            try:
+                await Motor.create({
+                    "id_motor": id_motor,
+                    "tag": f"P0{id_motor}-BA01",
+                    "descricao": f"Motor {id_motor}",
+                    "frequencia": 60,
+                    "corrente": 9.3,
+                    "tensao": 380,
+                    "potencia": 3.7,
+                })
+            except IntegrityError:
+                pass
 
         log_motor = LogMotor(
             id_motor=id_motor,
@@ -74,10 +77,16 @@ class LogMotor(db.Base):
             tensao_entrada=body.get("tensao"),
         )
 
-        session.add(log_motor)
-        await session.commit()
-        await session.close()
+        try:
+            session.add(log_motor)
+            await session.commit()
+            await session.close()
 
-        anomaly_detection()
+            anomaly_detection()
 
-        return jsonify({"mensagem": "Log do motor registrado com sucesso!"}), 200
+            return jsonify({"mensagem": "Log do motor registrado com sucesso!"}), 200
+
+        except Exception as e:
+            await session.rollback()
+            await session.close()
+            return jsonify({"error": str(e)}), 500

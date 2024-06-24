@@ -1,6 +1,5 @@
-from sqlalchemy import Column, Float, Integer, DateTime, func, String
+from sqlalchemy import Column, Float, Integer, DateTime, func, String, text
 from flask import jsonify
-from repository_log_motor import LogMotor
 import db
     
 class Motor(db.Base):
@@ -36,7 +35,18 @@ class Motor(db.Base):
         for row in data:
             builded_row = row.builder()
 
-            log_motor = session.query(LogMotor).filter_by(id_motor=row.id_motor).order_by(LogMotor.timestamp.desc()).first()
+            result = session.execute(text("""
+                SELECT status 
+                FROM log_motor 
+                WHERE id_motor = :id_motor                   
+                ORDER BY timestamp DESC 
+                LIMIT 1
+            """), {
+                    'id_motor': row.id_motor
+                }
+            )
+
+            log_motor = result.fetchone()
 
             if log_motor:
                 builded_row['status'] = log_motor.status

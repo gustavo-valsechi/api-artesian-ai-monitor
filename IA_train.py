@@ -2,16 +2,16 @@ import pandas as pd
 from sklearn.ensemble import IsolationForest
 from sklearn.preprocessing import StandardScaler
 from sqlalchemy import create_engine
+from db import external_engine
 import joblib
 
 def dataset():
     """
     Carrega os dados do banco de dados PostgreSQL usando uma consulta SQL.
     """
-    engine = create_engine('postgresql://database_artesian_ai_monitor_user:nWiyie5KaFy5ZO5pYvaR8hNJVdR0FHHx@dpg-cps1d056l47c73du3610-a.oregon-postgres.render.com/database_artesian_ai_monitor')
     query = "SELECT * FROM log_motor;"
 
-    with engine.connect() as connection:
+    with external_engine.connect() as connection:
         data = pd.read_sql_query(query, connection)
     return data
 

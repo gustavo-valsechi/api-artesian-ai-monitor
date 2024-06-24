@@ -7,7 +7,7 @@ import tools
 import db
 import math
 
-class FaultDetection(db.Base):
+class AnomalyDetection(db.Base):
     __tablename__ = 'previsao'
 
     id_previsao = Column(Integer, primary_key=True, autoincrement=True)
@@ -26,18 +26,18 @@ class FaultDetection(db.Base):
 
     def get(params):
         session = db.Session()
-        data = session.query(FaultDetection)
+        data = session.query(AnomalyDetection)
 
         params = tools.objectFormatter(params)
 
         filters = []  
 
         for key in params.get('filters') or {}:
-            if hasattr(FaultDetection, key):
-                attr = getattr(FaultDetection, key)
+            if hasattr(AnomalyDetection, key):
+                attr = getattr(AnomalyDetection, key)
                 filters.append(attr == params['filters'][key])
             else:
-                print(f"Atributo {key} não encontrado na classe FaultDetection")
+                print(f"Atributo {key} não encontrado na classe AnomalyDetection")
 
         if len(filters):
             data = data.filter(and_(*filters))
@@ -45,7 +45,7 @@ class FaultDetection(db.Base):
         total_query = data.statement.with_only_columns(func.count()).order_by(None)
         total_records = session.execute(total_query).scalar()
 
-        data = data.order_by(FaultDetection.timestamp.desc())
+        data = data.order_by(AnomalyDetection.timestamp.desc())
         data = data.limit(int(params.get('limit') or 10))
         data = data.offset(int(params.get('limit') or 10) * int(params.get('offset') or 0))
         data = data.all()
@@ -82,13 +82,13 @@ class FaultDetection(db.Base):
     def create(body):
         session = db.Session()
         
-        faultDetection = FaultDetection(
+        anomalyDetection = AnomalyDetection(
             id_log_motor=body.get("id_log_motor"),
             previsao_registrada=body.get("previsao"), 
             offset_tolerancia=body.get("offset_tolerancia", 0)
         )
 
-        session.add(faultDetection)
+        session.add(anomalyDetection)
         session.commit()
         session.close()
         

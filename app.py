@@ -6,7 +6,7 @@ from IA import anomaly_detection
 
 import db
 import router_auth
-import router_fault_detection
+import router_anomaly_detection
 import router_log_motor
 import router_motor
 import router_flow
@@ -28,7 +28,7 @@ if __name__ == '__main__':
     db.init()
 
     router_auth.router(app, jwt)
-    router_fault_detection.router(app, jwt)
+    router_anomaly_detection.router(app, jwt)
     router_log_motor.router(app, jwt)
     router_motor.router(app, jwt)
     router_flow.router(app, jwt)

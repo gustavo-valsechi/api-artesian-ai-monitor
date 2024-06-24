@@ -61,7 +61,7 @@ class AnomalyDetection(db.Base):
                 motor = session.query(Motor).filter_by(id_motor=log_motor.id_motor).first()
 
                 if motor:
-                    tag_motor = motor.tag
+                    tag_motor = motor.descricao
 
             builded_row['tag_motor'] = tag_motor
 

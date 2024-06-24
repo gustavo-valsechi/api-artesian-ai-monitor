@@ -1,10 +1,8 @@
 from sqlalchemy import Column, Float, Integer, DateTime, func, Boolean
-from sqlalchemy.exc import IntegrityError
 from flask import jsonify
 from repository_motor import Motor
 from IA import anomaly_detection
 import db
-import asyncio
     
 class LogMotor(db.Base):
     __tablename__ = 'log_motor'

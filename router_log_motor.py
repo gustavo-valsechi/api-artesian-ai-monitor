@@ -2,7 +2,6 @@ from repository_log_motor import LogMotor
 from flask_jwt_extended import jwt_required
 from flask import request, jsonify
 import tools
-import asyncio
 
 def router(app, jwt):
     @app.route('/log-motor', methods=['GET'])

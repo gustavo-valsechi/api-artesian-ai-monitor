@@ -46,7 +46,7 @@ class LogMotor(db.Base):
 
         return jsonify(serialized_data)
     
-    def create(body):
+    async def create(body):
         session = db.Session()
 
         id_motor = body.get("id_motor")
@@ -54,7 +54,7 @@ class LogMotor(db.Base):
         motor = session.query(Motor).filter_by(id_motor=id_motor).first()
 
         if not motor:
-            Motor.create({
+            await Motor.create({
                 "id_motor": id_motor,
                 "tag": "P0" + str(id_motor) + "BA01",
                 "descricao": "Motor " + str(id_motor),
@@ -72,9 +72,9 @@ class LogMotor(db.Base):
             tensao_entrada=body.get("tensao"),
         )
 
-        session.add(logMotor)
-        session.commit()
-        session.close()
+        await session.add(logMotor)
+        await session.commit()
+        await session.close()
 
         anomaly_detection()
         

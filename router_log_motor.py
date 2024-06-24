@@ -10,5 +10,5 @@ def router(app, jwt):
         return LogMotor.get()
     
     @app.route('/log-motor', methods=['POST'])
-    def create_log_motor():
-        return LogMotor.create(tools.requestFormatter(request)["body"])
+    async def create_log_motor():
+        return await LogMotor.create(tools.requestFormatter(request)["body"])

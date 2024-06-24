@@ -4,6 +4,7 @@ from flask_jwt_extended import JWTManager
 from waitress import serve
 from IA import anomaly_detection
 
+import db
 import router_auth
 import router_fault_detection
 import router_log_motor
@@ -23,6 +24,8 @@ if __name__ == '__main__':
         origins="*", 
         supports_credentials=True,
     )
+
+    db.init()
 
     router_auth.router(app, jwt)
     router_fault_detection.router(app, jwt)

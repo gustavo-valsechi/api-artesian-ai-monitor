@@ -1,0 +1,37 @@
+CREATE TABLE IF NOT EXISTS motor (
+    id_motor SERIAL PRIMARY KEY,
+    tag VARCHAR(255) NOT NULL,
+    descricao VARCHAR(255) NOT NULL,
+    frequencia FLOAT NOT NULL,
+    potencia FLOAT NOT NULL,
+    corrente FLOAT NOT NULL,
+    tensao FLOAT NOT NULL,
+    timestamp TIMESTAMP default CURRENT_TIMESTAMP NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS log_motor (
+    id_log_motor SERIAL PRIMARY KEY,
+    id_motor INT NOT NULL,
+    status BOOLEAN NOT NULL,
+    frequencia FLOAT NOT NULL,
+    corrente FLOAT NOT NULL,
+    tensao_entrada FLOAT NOT NULL,
+    timestamp TIMESTAMP default CURRENT_TIMESTAMP NOT NULL,
+    FOREIGN KEY (id_motor) REFERENCES motor(id_motor)
+);
+
+CREATE TABLE IF NOT EXISTS vazao (
+    id_vazao SERIAL PRIMARY KEY,
+    id_log_motor INT NOT NULL,
+    vazao_registrada FLOAT NOT NULL,
+    timestamp TIMESTAMP default CURRENT_TIMESTAMP NOT NULL,
+    FOREIGN KEY (id_log_motor) REFERENCES log_motor(id_log_motor)
+);
+
+CREATE TABLE IF NOT EXISTS previsao (
+    id_previsao SERIAL PRIMARY KEY,
+    id_log_motor INT NOT NULL,
+    previsao_registrada FLOAT NOT NULL,
+    timestamp TIMESTAMP default CURRENT_TIMESTAMP NOT null,
+    FOREIGN KEY (id_log_motor) REFERENCES log_motor(id_log_motor)
+);

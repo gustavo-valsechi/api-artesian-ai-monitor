@@ -50,12 +50,13 @@ if __name__ == '__main__':
     # Carregar os dados
     data = dataset()
 
-    # Pré-processar os dados
-    features_scaled, scaler = pre_processing_data(data)
+    if len(data):
+        # Pré-processar os dados
+        features_scaled, scaler = pre_processing_data(data)
 
-    # Treinar o modelo com parâmetros ajustáveis
-    model = train(features_scaled, contamination=0.1, n_estimators=200, max_samples=256, max_features=1.0, bootstrap=False)
+        # Treinar o modelo com parâmetros ajustáveis
+        model = train(features_scaled, contamination=0.1, n_estimators=200, max_samples=256, max_features=1.0, bootstrap=False)
 
-    # Salvar o modelo treinado e o scaler
-    joblib.dump(model, model_path)
-    joblib.dump(scaler, scaler_path)
+        # Salvar o modelo treinado e o scaler
+        joblib.dump(model, model_path)
+        joblib.dump(scaler, scaler_path)

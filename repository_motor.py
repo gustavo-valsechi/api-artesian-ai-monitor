@@ -74,16 +74,16 @@ class Motor(db.Base):
             if motor:
                 session.close()
                 return jsonify({"mensagem": "Motor já existe"}), 200
-        else:
-            motor = Motor()
 
-        motor.id_motor = id_motor
-        motor.tag = body.get("tag", motor.tag)
-        motor.descricao = body.get("descricao", motor.descricao)
-        motor.frequencia = body.get("frequencia", motor.frequencia)
-        motor.corrente = body.get("corrente", motor.corrente)
-        motor.tensao = body.get("tensao", motor.tensao)
-        motor.potencia = body.get("potencia", motor.potencia)
+        motor = Motor(
+            id_motor=id_motor,
+            tag=body.get("tag"),
+            descricao=body.get("descricao"), 
+            frequencia=body.get("frequencia"),
+            corrente=body.get("corrente"),
+            tensao=body.get("tensao"),
+            potencia=body.get("potencia"),
+        )
 
         session.add(motor)
         session.commit()

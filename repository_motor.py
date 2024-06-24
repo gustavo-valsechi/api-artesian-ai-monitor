@@ -36,7 +36,7 @@ class Motor(db.Base):
         for row in data:
             builded_row = row.builder()
 
-            log_motor = session.query(LogMotor).filter_by(id_motor=row.id_motor).order_by(Motor.timestamp.desc()).first()
+            log_motor = session.query(LogMotor).filter_by(id_motor=row.id_motor).order_by(LogMotor.timestamp.desc()).first()
 
             if log_motor:
                 builded_row['status'] = log_motor.status

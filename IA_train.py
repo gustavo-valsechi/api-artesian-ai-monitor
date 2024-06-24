@@ -9,7 +9,7 @@ def dataset():
     """
     Carrega os dados do banco de dados PostgreSQL usando uma consulta SQL.
     """
-    query = "SELECT * FROM log_motor;"
+    query = "SELECT * FROM log_motor WHERE status IS TRUE;"
 
     with external_engine.connect() as connection:
         data = pd.read_sql_query(query, connection)

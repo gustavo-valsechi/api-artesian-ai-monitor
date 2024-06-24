@@ -7,7 +7,7 @@ def dataset():
     """
     Carrega os dados do banco de dados PostgreSQL usando uma consulta SQL.
     """
-    query = "SELECT * FROM log_motor lm WHERE NOT EXISTS (SELECT 1 FROM previsao p WHERE p.id_log_motor = lm.id_log_motor);"
+    query = "SELECT * FROM log_motor lm WHERE lm.status IS TRUE AND NOT EXISTS (SELECT 1 FROM previsao p WHERE p.id_log_motor = lm.id_log_motor);"
 
     with internal_engine.connect() as connection:
         data = pd.read_sql_query(query, connection)

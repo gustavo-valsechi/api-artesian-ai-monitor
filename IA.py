@@ -52,15 +52,6 @@ def response(data, detections):
             # Log para verificar se a atualização foi realizada
             print(f"Atualização {i + 1}/{len(detections)}: Linhas afetadas = {result.rowcount}")
 
-# cria um arquivo CSV para com os dados e as previsões de anomalias (PODE REMOVER DEPOIS)
-def salvar_resultados(data, detections, output_path):
-    """
-    Salva os dados com as previsões de anomalias em um arquivo CSV.
-    """
-    # Adicionar a coluna de anomalias aos dados originais
-    data['anomalia'] = detections
-    data.to_csv(output_path, index=False, encoding='utf-8', sep=',')
-
 def anomaly_detection():
     # Carregar os dados do banco de dados
     data = dataset()

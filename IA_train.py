@@ -1,7 +1,6 @@
 import pandas as pd
 from sklearn.ensemble import IsolationForest
 from sklearn.preprocessing import StandardScaler
-from sqlalchemy import create_engine
 from db import external_engine
 import joblib
 
